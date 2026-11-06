@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SafeExit — Native iOS Mobile App Mockup</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        * { -webkit-tap-highlight-color: transparent; user-select: none; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+            background: radial-gradient(circle at 50% 20%, #1e293b 0%, #090d16 65%, #05070c 100%);
+            min-height: 100vh; overflow-x: hidden;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Realistic iPhone Frame */
+        .iphone-frame {
+            width: 392px; height: 848px; border-radius: 56px; padding: 12px;
+            background: linear-gradient(145deg, #475569 0%, #1e293b 35%, #0f172a 70%, #334155 100%);
+            box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.85), inset 0 0 4px rgba(255, 255, 255, 0.25);
+            position: relative; margin: 20px auto;
+        }
+        .iphone-screen {
+            width: 100%; height: 100%; border-radius: 45px; overflow: hidden;
+            position: relative; background: #f2f4f8; display: flex; flex-direction: column;
+        }
+        
+        .ios-spring { animation: iosSlideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+        @keyframes iosSlideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .tap-scale:active { transform: scale(0.96); }
+
+        @media (max-width: 440px) {
+            .iphone-frame { width: 100vw; height: 100vh; border-radius: 0; padding: 0; margin: 0; }
+            .iphone-screen { border-radius: 0; }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center relative">
+
+<div class="iphone-frame">
+    <main class="iphone-screen">
+
+        <!-- ========================================== -->
+        <!-- DYNAMIC ISLAND & STATUS BAR -->
+        <!-- ========================================== -->
+        <header id="ios-status-bar" class="bg-white/90 backdrop-blur-md px-6 pt-3 pb-2 flex items-center justify-between text-slate-900 shrink-0 z-30">
+            <span class="text-[13px] font-bold w-14">09:41</span>
+            <div onclick="toggleCamouflage(true)" class="w-[116px] h-[30px] bg-black rounded-full flex items-center justify-between px-3 cursor-pointer shadow-inner" title="Πατήστε για Καμουφλάζ">
+                <div class="flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span class="text-[9px] font-bold text-emerald-400">INCOGNITO</span>
+                </div>
+            </div>
+            <div class="flex items-center justify-end gap-1.5 w-14 text-xs">
+                <i class="fa-solid fa-signal text-[10px]"></i>
+                <i class="fa-solid fa-battery-full text-[14px]"></i>
+            </div>
+        </header>
+
+        <!-- ========================================== -->
+        <!-- APP HEADER (SAFE EXIT) -->
+        <!-- ========================================== -->
+        <div id="native-app-header" class="bg-white/90 backdrop-blur-md border-b border-slate-200 px-4 py-3 flex items-center justify-between z-20 transition-all duration-300">
+            <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-2xl bg-teal-700 text-white flex items-center justify-center">
+                    <i class="fa-solid fa-shield-heart"></i>
+                </div>
+                <div>
+                    <h1 class="text-[15px] font-black text-slate-900 leading-none">SafeExit</h1>
+                    <p class="text-[10px] text-slate-500 font-medium mt-1">Ασφαλής Διαφυγή</p>
+                </div>
+            </div>
+            <button onclick="toggleCamouflage(true)" class="bg-rose-600 active:bg-rose-700 text-white px-3 py-1.5 rounded-full shadow-md flex items-center gap-1.5 tap-scale">
+                <i class="fa-solid fa-mask text-[10px]"></i>
+                <span class="text-[11px] font-extrabold">ΚΑΛΥΨΗ (ESC)</span>
+            </button>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- MAIN CONTENT TABS -->
+        <!-- ========================================== -->
+        <div id="native-viewport" class="flex-1 overflow-y-auto no-scrollbar relative bg-[#f2f4f8]">
+            
+            <!-- TAB 1: TRIAGE / ΑΞΙΟΛΟΓΗΣΗ -->
+            <section id="tab-triage" class="p-4 space-y-4 ios-spring">
+                <div class="mb-2">
+                    <h2 class="text-base font-black text-slate-900">Αξιολόγηση</h2>
+                    <p class="text-xs text-slate-500">Προσαρμόζουμε το σχέδιο στις δικές σας ανάγκες.</p>
+                </div>
+
+                <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-200">
+                    <div class="flex items-center justify-between mb-4">
+                        <span id="wizard-step-counter" class="text-xs font-bold text-teal-700 bg-teal-50 px-2 py-1 rounded-full">Βήμα 1/3</span>
+                    </div>
+                    <div id="wizard-question-container" class="space-y-2"></div>
+                </div>
+            </section>
+
+            <!-- TAB 2: AI RECOMMENDER & EMPOWERMENT -->
+            <section id="tab-ai" class="hidden p-4 space-y-4 ios-spring">
+                
+                <div class="flex items-center justify-between mb-1 px-1">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500">Προτεινόμενες Δομές</h3>
+                    <span id="ai-status-badge" class="text-[10px] font-black px-2 py-0.5 rounded-full bg-rose-100 text-rose-700"></span>
+                </div>
+                
+                <!-- Κοντέινερ με τις Δομές -->
+                <div id="ai-ngos-container" class="space-y-3"></div>
+
+                <!-- Δυναμική Κάρτα Εμψύχωσης (Κάτω & Λευκή) -->
+                <div id="ai-hero-card" class="bg-white rounded-2xl p-4 shadow-sm border-l-4 border-rose-500 transition-colors mt-2">
+                    <div class="flex items-center gap-2 mb-1.5">
+                        <i id="ai-heart-icon" class="fa-solid fa-heart text-rose-500 text-[13px]"></i>
+                        <span class="text-[11px] font-bold text-slate-700 uppercase tracking-wider">Μηνυμα Υποστηριξης</span>
+                    </div>
+                    <h3 id="ai-empower-message" class="text-xs font-medium mt-1 leading-relaxed text-slate-600">
+                        Δεν είσαι μόνη. Υπάρχει άμεση διέξοδος και βοήθεια διαθέσιμη.
+                    </h3>
+                </div>
+            </section>
+
+            <!-- TAB 3: ACTION PLAN & DOCUMENTS -->
+            <section id="tab-plan" class="hidden p-4 space-y-4 ios-spring">
+                <div class="bg-teal-50 border border-teal-200 rounded-3xl p-4 flex items-center justify-between">
+                    <div>
+                        <h3 class="text-xs font-bold text-teal-900 mb-1"><i class="fa-solid fa-list-check"></i> Εξατομικευμένο Σχέδιο</h3>
+                        <p class="text-[11px] text-teal-800">Βάσει του προφίλ σας.</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-white border border-teal-200 flex items-center justify-center text-teal-700 font-black text-xs shadow-sm" id="plan-progress">
+                        0%
+                    </div>
+                </div>
+                
+                <div id="plan-container" class="space-y-4 pb-4">
+                    <!-- Dynamic Action & Document Steps -->
+                </div>
+            </section>
+            
+            <!-- ========================================== -->
+            <!-- CAMOUFLAGE MODE (COOKGREEK) -->
+            <!-- ========================================== -->
+            <section id="tab-camouflage" class="hidden min-h-full bg-[#fcfcfc] flex flex-col absolute inset-0 z-50 ios-spring overflow-y-auto pb-10">
+                <div class="px-4 py-3 border-b border-orange-100 flex items-center justify-between bg-white shadow-sm sticky top-0 z-10">
+                    <!-- SECRET RETURN: Double click here! -->
+                    <div ondblclick="toggleCamouflage(false)" class="flex items-center gap-2 cursor-pointer w-full">
+                        <div class="w-9 h-9 rounded-2xl bg-orange-500 text-white flex items-center justify-center">
+                            <i class="fa-solid fa-utensils"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-sm font-black text-slate-900">CookGreek</h2>
+                            <p class="text-[10px] text-orange-600 font-bold">Συνταγές της Ημέρας</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-4 space-y-4">
+                    <div class="bg-slate-100 rounded-2xl px-4 py-3 flex items-center gap-2 text-xs text-slate-400">
+                        <i class="fa-solid fa-magnifying-glass"></i> Αναζήτηση συνταγής...
+                    </div>
+
+                    <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
+                        <img src="https://images.unsplash.com/photo-1594041680534-e8c8cdebd659?w=500&h=300&fit=crop" class="h-36 w-full object-cover" alt="Μουσακάς">
+                        <div class="p-4">
+                            <span class="text-[10px] font-bold text-orange-600 bg-orange-100 px-2 py-1 rounded-md">⭐ Συνταγή της Ημέρας</span>
+                            <h3 class="text-sm font-black mt-2">Σπιτικός Μουσακάς</h3>
+                            <p class="text-xs text-slate-500 mt-1">Με αφράτη μπεσαμέλ και μελιτζάνες.</p>
+                            <div class="flex items-center gap-3 mt-3 text-[10px] font-bold text-slate-400">
+                                <span><i class="fa-regular fa-clock"></i> 90 λεπτά</span>
+                                <span><i class="fa-solid fa-fire"></i> 450 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mt-2 mb-1 ml-1">Δημοφιλείς Επιλογές</h3>
+                    
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm flex flex-col">
+                            <div class="h-20 bg-amber-100 flex items-center justify-center text-3xl">🍋</div>
+                            <div class="p-2.5">
+                                <h4 class="text-xs font-bold">Κοτόπουλο Λεμονάτο</h4>
+                                <p class="text-[9px] text-slate-500 mt-0.5">⏱️ 60' • Εύκολο</p>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm flex flex-col">
+                            <div class="h-20 bg-emerald-100 flex items-center justify-center text-3xl">🍅</div>
+                            <div class="p-2.5">
+                                <h4 class="text-xs font-bold">Γεμιστά Ορφανά</h4>
+                                <p class="text-[9px] text-slate-500 mt-0.5">⏱️ 75' • Παραδοσιακό</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- BOTTOM NAVIGATION TAB BAR -->
+        <!-- ========================================== -->
+        <nav id="native-tab-bar" class="bg-white border-t border-slate-200 px-2 pt-2 pb-3 shrink-0 z-30 flex justify-around transition-all duration-300">
+            <button onclick="switchTab('triage')" id="nav-btn-triage" class="nav-btn text-teal-700 flex flex-col items-center tap-scale">
+                <i class="fa-solid fa-list-check text-[18px]"></i>
+                <span class="text-[10px] font-bold mt-1">Αξιολόγηση</span>
+            </button>
+            <button onclick="switchTab('ai')" id="nav-btn-ai" class="nav-btn text-slate-400 flex flex-col items-center tap-scale">
+                <i class="fa-solid fa-heart-circle-check text-[18px]"></i>
+                <span class="text-[10px] font-bold mt-1">Υποστήριξη</span>
+            </button>
+            <button onclick="switchTab('plan')" id="nav-btn-plan" class="nav-btn text-slate-400 flex flex-col items-center tap-scale">
+                <i class="fa-solid fa-clipboard-check text-[18px]"></i>
+                <span class="text-[10px] font-bold mt-1">Σχέδιο Δράσης</span>
+            </button>
+        </nav>
+    </main>
+</div>
+
+<script>
+    // --- 1. PREDICTIVE MODEL & TRIAGE LOGIC ---
+    let currentStep = 0;
+    const userProfile = { danger: '', dependents: '', need: '' };
+    let checkedSteps = new Set();
+    
+    const questions = [
+        { key: 'danger', title: '1. Υπάρχει άμεσος κίνδυνος βίας;', options: [
+            { val: 'immediate', label: 'Ναι, βρίσκομαι σε κίνδυνο τώρα', icon: 'fa-triangle-exclamation' },
+            { val: 'planning', label: 'Όχι, αλλά σχεδιάζω να φύγω', icon: 'fa-calendar' }
+        ]},
+        { key: 'dependents', title: '2. Υπάρχουν ανήλικα παιδιά;', options: [
+            { val: 'kids', label: 'Ναι, υπάρχουν παιδιά', icon: 'fa-children' },
+            { val: 'none', label: 'Όχι, είμαι μόνη/ος', icon: 'fa-user' }
+        ]},
+        { key: 'need', title: '3. Τι βοήθεια χρειάζεστε πιο άμεσα;', options: [
+            { val: 'shelter', label: 'Ασφαλή Ξενώνα / Στέγαση', icon: 'fa-bed' },
+            { val: 'legal', label: 'Νομική Βοήθεια / Δικηγόρο', icon: 'fa-scale-balanced' }
+        ]}
+    ];
+
+    function renderTriage() {
+        const q = questions[currentStep];
+        document.getElementById('wizard-step-counter').textContent = `Βήμα ${currentStep + 1} από 3`;
+        
+        const optsHTML = q.options.map(opt => `
+            <button onclick="selectOption('${q.key}', '${opt.val}')" class="w-full text-left p-4 rounded-2xl border-2 border-slate-100 bg-slate-50 hover:bg-teal-50 hover:border-teal-200 transition flex items-center gap-3 tap-scale">
+                <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm text-slate-600"><i class="fa-solid ${opt.icon}"></i></div>
+                <span class="text-xs font-bold text-slate-800">${opt.label}</span>
+            </button>
+        `).join('');
+
+        document.getElementById('wizard-question-container').innerHTML = `
+            <h3 class="text-sm font-black text-slate-900 mb-4">${q.title}</h3>
+            ${optsHTML}
+        `;
+    }
+
+    function selectOption(key, val) {
+        userProfile[key] = val;
+        if (currentStep < 2) {
+            currentStep++;
+            renderTriage();
+        } else {
+            calculateRecommendations();
+            switchTab('ai');
+        }
+    }
+
+    // --- 2. RECOMMENDER SYSTEM & EMPOWERMENT LOGIC ---
+    const ngos = [
+        { id: 'sos', name: 'Γραμμή SOS 15900', desc: 'Άμεση μεταφορά σε μυστικό ξενώνα 24/7.', category: 'shelter', forDanger: 'immediate' },
+        { id: 'diotima', name: 'Κέντρο Διοτίμα', desc: 'Δωρεάν δικηγόρος για ασφαλιστικά μέτρα και επιμέλεια.', category: 'legal', forDanger: 'planning' },
+        { id: 'smile', name: 'Χαμόγελο του Παιδιού', desc: 'Υποστήριξη και ξενώνες για μητέρες με ανήλικα.', category: 'shelter', forKids: true }
+    ];
+
+    function calculateRecommendations() {
+        const heroCard = document.getElementById('ai-hero-card');
+        const badge = document.getElementById('ai-status-badge');
+        const empowerMsg = document.getElementById('ai-empower-message');
+        const heartIcon = document.getElementById('ai-heart-icon');
+
+        // Dynamic Empowerment Message & Color Status based on profile
+        if (userProfile.danger === 'immediate') {
+            heroCard.className = 'bg-white rounded-2xl p-4 shadow-sm border-l-4 border-rose-500 transition-colors mt-2';
+            heartIcon.className = 'fa-solid fa-heart text-rose-500 text-[13px]';
+            badge.className = 'text-[10px] font-black bg-rose-100 text-rose-700 px-2 py-0.5 rounded-full';
+            badge.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Άμεση Προτεραιότητα';
+            
+            if (userProfile.dependents === 'kids') {
+                empowerMsg.textContent = 'Εσύ και τα παιδιά σου αξίζετε να είστε ασφαλείς. Δεν είστε μόνοι, υπάρχει διέξοδος 24 ώρες το 24ωρο. Δες τις δομές που μπορούν να σας βοηθήσουν τώρα.';
+            } else {
+                empowerMsg.textContent = 'Η ασφάλειά σου προέχει. Δεν είσαι μόνη σε αυτό. Υπάρχουν άνθρωποι και δομές έτοιμες να σε βοηθήσουν αμέσως. Κάνε το επόμενο βήμα.';
+            }
+        } else {
+            heroCard.className = 'bg-white rounded-2xl p-4 shadow-sm border-l-4 border-amber-400 transition-colors mt-2';
+            heartIcon.className = 'fa-solid fa-heart text-amber-500 text-[13px]';
+            badge.className = 'text-[10px] font-black bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full';
+            badge.innerHTML = '<i class="fa-solid fa-shield-halved"></i> Στάδιο Σχεδιασμού';
+            
+            if (userProfile.dependents === 'kids') {
+                empowerMsg.textContent = 'Η προετοιμασία είναι η μεγαλύτερη δύναμη για εσένα και τα παιδιά σου. Συγκέντρωσε τα απαραίτητα και σχεδίασε το μέλλον σας με ασφάλεια.';
+            } else {
+                empowerMsg.textContent = 'Κάθε μεγάλο βήμα ξεκινά με ένα σχέδιο. Οργανώσου αθόρυβα, βρες τη στήριξη που χρειάζεσαι και πάρε πίσω τον έλεγχο της ζωής σου.';
+            }
+        }
+
+        // Recommender System Logic
+        let recommended = ngos.map(ngo => {
+            let match = 50;
+            let reason = '';
+            
+            if (userProfile.danger === ngo.forDanger) { match += 30; reason = 'Ταιριάζει στο επίπεδο κινδύνου. '; }
+            if (userProfile.need === ngo.category) { match += 20; reason += 'Καλύπτει την κύρια ανάγκη σας. '; }
+            if (userProfile.dependents === 'kids' && ngo.forKids) { match += 25; reason += 'Εξειδίκευση σε παιδιά.'; }
+            
+            return { ...ngo, match, reason };
+        }).filter(n => n.match > 50).sort((a,b) => b.match - a.match);
+
+        document.getElementById('ai-ngos-container').innerHTML = recommended.map(ngo => `
+            <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
+                <div class="flex justify-between items-start">
+                    <h4 class="text-xs font-black text-slate-900">${ngo.name}</h4>
+                    <span class="text-[10px] bg-teal-100 text-teal-800 px-2 py-0.5 rounded-full font-bold">Match ${ngo.match}%</span>
+                </div>
+                <p class="text-[11px] text-slate-600 mt-1">${ngo.desc}</p>
+                <div class="mt-2 text-[10px] text-teal-700 font-bold bg-teal-50 px-2 py-1 rounded-md">
+                    <i class="fa-solid fa-robot mr-1"></i> Επεξήγηση: ${ngo.reason || 'Βασική επιλογή'}
+                </div>
+            </div>
+        `).join('');
+
+        renderActionPlan();
+    }
+
+    // --- 3. DYNAMIC ACTION PLAN & DOCUMENTS ---
+    function renderActionPlan() {
+        const steps = [];
+        const docs = [];
+
+        if (userProfile.danger === 'immediate') {
+            steps.push({ id: 'a1', title: 'Εγκατάσταση Panic Button (ΕΛ.ΑΣ.)', desc: 'Αθόρυβη ειδοποίηση της αστυνομίας με το πάτημα ενός κουμπιού.' });
+            steps.push({ id: 'a2', title: 'Άμεση κλήση στο 15900', desc: 'Για άμεση μεταφορά σε ξενώνα μυστικής τοποθεσίας.' });
+        } else {
+            steps.push({ id: 'a3', title: 'Συμβουλευτική σε ΜΚΟ', desc: 'Κλείστε ραντεβού για δωρεάν νομική και ψυχολογική στήριξη.' });
+            steps.push({ id: 'a4', title: 'Ετοιμασία Τσάντας Διαφυγής', desc: 'Κρύψτε λίγα ρούχα, κλειδιά και μετρητά στο σπίτι ενός έμπιστου φίλου.' });
+        }
+
+        docs.push({ id: 'd1', title: 'Ταυτότητα / Διαβατήριο', desc: 'Πρωτότυπο και φωτογραφία στο κινητό.' });
+        docs.push({ id: 'd2', title: 'Κωδικοί Taxisnet / ΑΜΚΑ', desc: 'Απαραίτητα για πρόσβαση σε επιδόματα διαβίωσης.' });
+
+        if (userProfile.dependents === 'kids') {
+            docs.push({ id: 'd4', title: 'Πιστοποιητικά Γέννησης Παιδιών', desc: 'Για μετεγγραφή σε νέο σχολείο και εισαγωγή σε ξενώνα.' });
+        }
+
+        const renderGroup = (title, icon, items, colorClass) => `
+            <div class="bg-white rounded-3xl p-4 border border-slate-200 shadow-sm">
+                <h4 class="text-xs font-black text-slate-900 mb-3 border-b pb-2"><i class="fa-solid ${icon} ${colorClass}"></i> ${title}</h4>
+                <div class="space-y-2">
+                    ${items.map(item => {
+                        const checked = checkedSteps.has(item.id);
+                        return `
+                        <div onclick="togglePlanStep('${item.id}')" class="p-3 rounded-2xl border transition flex items-start gap-3 tap-scale ${checked ? 'bg-emerald-50 border-emerald-200' : 'bg-slate-50 border-slate-100'} cursor-pointer">
+                            <div class="w-5 h-5 rounded border flex items-center justify-center shrink-0 mt-0.5 ${checked ? 'bg-emerald-600 border-emerald-600 text-white' : 'bg-white border-slate-300'}">
+                                ${checked ? '<i class="fa-solid fa-check text-[10px]"></i>' : ''}
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold ${checked ? 'line-through text-slate-400' : 'text-slate-900'}">${item.title}</div>
+                                <p class="text-[10px] text-slate-500 mt-1">${item.desc}</p>
+                            </div>
+                        </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+        `;
+
+        document.getElementById('plan-container').innerHTML = 
+            renderGroup('Βήματα Προστασίας', 'fa-person-running', steps, 'text-rose-500') + 
+            renderGroup('Απαραίτητα Έγγραφα', 'fa-folder-open', docs, 'text-amber-500');
+
+        const total = steps.length + docs.length;
+        const pct = total === 0 ? 0 : Math.round((checkedSteps.size / total) * 100);
+        document.getElementById('plan-progress').textContent = `${pct}%`;
+        document.getElementById('plan-progress').className = `w-12 h-12 rounded-full border-4 flex items-center justify-center font-black text-xs shadow-sm transition-all ${pct === 100 ? 'bg-emerald-100 border-emerald-500 text-emerald-700' : 'bg-white border-teal-200 text-teal-700'}`;
+    }
+
+    function togglePlanStep(id) {
+        if (checkedSteps.has(id)) checkedSteps.delete(id);
+        else checkedSteps.add(id);
+        renderActionPlan();
+    }
+
+    // --- 4. NAVIGATION & CAMOUFLAGE (PANIC BUTTON) ---
+    function switchTab(tabId) {
+        ['triage', 'ai', 'plan'].forEach(t => {
+            document.getElementById(`tab-${t}`).classList.add('hidden');
+            document.getElementById(`nav-btn-${t}`).classList.remove('text-teal-700');
+            document.getElementById(`nav-btn-${t}`).classList.add('text-slate-400');
+        });
+        document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+        document.getElementById(`nav-btn-${tabId}`).classList.remove('text-slate-400');
+        document.getElementById(`nav-btn-${tabId}`).classList.add('text-teal-700');
+    }
+
+    function toggleCamouflage(force) {
+        const camo = document.getElementById('tab-camouflage');
+        const header = document.getElementById('native-app-header');
+        const nav = document.getElementById('native-tab-bar');
+        
+        if (force) {
+            camo.classList.remove('hidden');
+            header.classList.add('hidden');
+            nav.classList.add('hidden');
+        } else {
+            camo.classList.add('hidden');
+            header.classList.remove('hidden');
+            nav.classList.remove('hidden');
+        }
+    }
+
+    window.addEventListener('keydown', (e) => { if (e.key === 'Escape') toggleCamouflage(true); });
+    window.onload = () => { renderTriage(); renderActionPlan(); };
+</script>
+</body>
+</html>
